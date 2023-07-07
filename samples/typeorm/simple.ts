@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, Connection, BaseEntity, LessThan } from "typeorm";
-import { newDb } from '../../src/db';
 import { assert, expect } from 'chai';
+import { createTypeormDb } from "../../src/tests/test-utils";
 
 // Declare an entity
 @Entity()
@@ -20,13 +20,10 @@ export class User extends BaseEntity {
 
 }
 
-export async function typeormSimpleSample() {
+export async function typeormSimpleSample () {
 
     //==== create a memory db
-    const db = newDb({
-        // 👉 Recommended when using Typeorm .synchronize(), which creates foreign keys but not indices !
-       autoCreateForeignKeyIndices: true,
-   });
+    const db = createTypeormDb();
 
     //==== create a Typeorm connection
     const got: Connection = await db.adapters.createTypeormConnection({
@@ -59,8 +56,10 @@ export async function typeormSimpleSample() {
 
         //==== query entities
         const youngJohns = await users.find({
-            firstName: 'john',
-            age: LessThan(30)
+            where: {
+                firstName: 'john',
+                age: LessThan(30)
+            }
         });
 
         expect(youngJohns.map(x => x.lastName))  // outputs 'doe' !

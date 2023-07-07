@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, Connection, BaseEntity, LessTha
 import { newDb } from '../../src/db';
 import chai, { expect } from 'chai';
 import shallow from 'chai-shallow-deep-equal';
+import { createTypeormDb } from "../../src/tests/test-utils";
 chai.use(shallow);
 
 @Entity()
@@ -31,13 +32,10 @@ export class Photo extends BaseEntity {
     user!: User;
 }
 
-export async function typeormJoinsSample() {
+export async function typeormJoinsSample () {
 
     //==== create a memory db
-    const db = newDb({
-        // 👉 Recommended when using Typeorm .synchronize(), which creates foreign keys but not indices !
-        autoCreateForeignKeyIndices: true,
-    });
+    const db = createTypeormDb();
 
     //==== create a Typeorm connection
     const got: Connection = await db.adapters.createTypeormConnection({

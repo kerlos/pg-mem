@@ -26,7 +26,7 @@ export abstract class External extends BaseEntity {
 
     @BeforeInsert()
     @BeforeUpdate()
-    async validate(): Promise<void> {
+    async validate (): Promise<void> {
         // nop
     }
 }
@@ -127,7 +127,13 @@ describe('IRL tests', () => {
 
 
         // test form query result
-        const loaded_form = await Form.find({ user });
+        const loaded_form = await Form.find({
+            where: {
+                user: {
+                    id: user.id
+                }
+            }
+        });
         assert.exists(loaded_form);
         expect(loaded.length).to.equal(1);
     });
@@ -143,7 +149,11 @@ describe('IRL tests', () => {
         try {
             let threw = false;
             try {
-                await User.find({ id: '' });
+                await User.find({
+                    where: {
+                        id: ''
+                    }
+                });
             } catch (e) {
                 // nop
                 threw = true;
