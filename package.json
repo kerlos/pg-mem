@@ -1,6 +1,6 @@
 {
   "name": "@kerlos127/pg-mem",
-  "version": "2.6.15",
+  "version": "2.6.16",
   "description": "A memory version of postgres",
   "main": "index.js",
   "scripts": {
